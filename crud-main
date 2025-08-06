@@ -1,43 +1,57 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>MySQL Table Viewer</title>
+    <title>MySQL Table Viewer</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 8px;
+        }
+    </style>
 </head>
 <body>
-	<h1>MySQL Table Viewer</h1>
-	<?php
-		// Define database connection variables
-		$servername = "option3-webapp.database.windows.net";
-		$username = "bhavesh";
-		$password = "kripal@123";
-		$dbname = "webapp-db";
+    <h1>MySQL Table Viewer</h1>
+    <?php
+        // Enable strict error reporting
+        mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
-		// Create database connection
-		$conn = new mysqli($servername, $username, $password, $dbname);
+        // Define database connection variables
+        $servername = "option3-webapp.database.windows.net";
+        $username = "bhavesh";
+        $password = "kripal@123";
+        $dbname = "webapp-db";
 
-		// Check connection
-		if ($conn->connect_error) {
-			die("Connection failed: " . $conn->connect_error);
-		}
+        try {
+            // Create database connection with exception handling
+            $conn = new mysqli($servername, $username, $password, $dbname);
+            $conn->set_charset("utf8mb4"); // Set charset
 
-		// Query database for all rows in the table
-		$sql = "SELECT * FROM mytable";
-		$result = $conn->query($sql);
+            // Query database for all rows in the table
+            $sql = "SELECT * FROM mytable";
+            $result = $conn->query($sql);
 
-		if ($result->num_rows > 0) {
-			// Display table headers
-			echo "<table><tr><th>ID</th><th>Name</th><th>Email</th></tr>";
-			// Loop through results and display each row in the table
-			while($row = $result->fetch_assoc()) {
-				echo "<tr><td>" . $row["id"] . "</td><td>" . $row["name"] . "</td><td>" . $row["email"] . "</td></tr>";
-			}
-			echo "</table>";
-		} else {
-			echo "0 results";
-		}
+            if ($result->num_rows > 0) {
+                // Display table headers
+                echo "<table><tr><th>ID</th><th>Name</th><th>Email</th></tr>";
 
-		// Close database connection
-		$conn->close();
-	?>
+                // Loop through results and display each row
+                while ($row = $result->fetch_assoc()) {
+                    echo "<tr><td>" . htmlspecialchars($row["id"]) . "</td><td>" . 
+                                  htmlspecialchars($row["name"]) . "</td><td>" . 
+                                  htmlspecialchars($row["email"]) . "</td></tr>";
+                }
+
+                echo "</table>";
+            } else {
+                echo "No results found.";
+            }
+
+            $conn->close();
+
+        } catch (mysqli_sql_exception $e) {
+            echo "<p style='color:red;'>Database connection or query failed: " . htmlspecialchars($e->getMessage()) . "</p>";
+        }
+    ?>
 </body>
 </html>
