@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy PHP app to Azure Web App - bhavesh
+name: Build and deploy PHP app to Azure Web App - Bhavesh
 
 on:
   push:
@@ -21,7 +21,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.1'
+          php-version: '8.2'
 
       - name: Check if composer.json exists
         id: check_files
@@ -56,15 +56,15 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_216388448CF4478F8D6EC956FA29D0F8 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_4D7C4B7F97B34AE7AFD278112BB087B3 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_7C505A5BC3D24133A98F744FBEC641BB }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_415A8C7804EF4C5BA1EFD85BA01A8A82 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_955838215B1C44D0BB9899D4EBC426B8 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_A65A0B49854C4B739DF2F0DEFA8A5759 }}
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
-          app-name: 'bhavesh'
+          app-name: 'Bhavesh'
           slot-name: 'Production'
           package: .
           
