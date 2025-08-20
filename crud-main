@@ -18,28 +18,33 @@
 
         // Define database connection variables
         $servername = "bhaveshkripal.database.windows.net";
-        $username = "bhaveshk";
-        $password = "kripal@123";
-        $dbname = "bhavesh";
+        $username   = "bhaveshk";
+        $password   = "kripal@123";
+        $dbname     = "bhavesh";
 
         try {
             // Create database connection with exception handling
             $conn = new mysqli($servername, $username, $password, $dbname);
+
+            if ($conn->connect_errno) {
+                throw new mysqli_sql_exception("Failed to connect: " . $conn->connect_error, $conn->connect_errno);
+            }
+
             $conn->set_charset("utf8mb4"); // Set charset
 
             // Query database for all rows in the table
             $sql = "SELECT * FROM mytable";
             $result = $conn->query($sql);
 
-            if ($result->num_rows > 0) {
+            if ($result instanceof mysqli_result && $result->num_rows > 0) {
                 // Display table headers
                 echo "<table><tr><th>ID</th><th>Name</th><th>Email</th></tr>";
 
                 // Loop through results and display each row
                 while ($row = $result->fetch_assoc()) {
-                    echo "<tr><td>" . htmlspecialchars($row["id"]) . "</td><td>" . 
-                                  htmlspecialchars($row["name"]) . "</td><td>" . 
-                                  htmlspecialchars($row["email"]) . "</td></tr>";
+                    echo "<tr><td>" . htmlspecialchars((string)$row["id"]) . "</td><td>" . 
+                                  htmlspecialchars((string)$row["name"]) . "</td><td>" . 
+                                  htmlspecialchars((string)$row["email"]) . "</td></tr>";
                 }
 
                 echo "</table>";
@@ -47,10 +52,12 @@
                 echo "No results found.";
             }
 
+            $result?->free(); // Null-safe operator to avoid warnings
             $conn->close();
 
         } catch (mysqli_sql_exception $e) {
-            echo "<p style='color:red;'>Database connection or query failed: " . htmlspecialchars($e->getMessage()) . "</p>";
+            echo "<p style='color:red;'>Database connection or query failed: " . 
+                  htmlspecialchars($e->getMessage()) . "</p>";
         }
     ?>
 </body>
