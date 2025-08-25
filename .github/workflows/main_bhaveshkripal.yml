@@ -49,6 +49,13 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: php-app
+          
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_415A8C7804EF4C5BA1EFD85BA01A8A82 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_955838215B1C44D0BB9899D4EBC426B8 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_A65A0B49854C4B739DF2F0DEFA8A5759 }}
       
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
@@ -57,4 +64,5 @@ jobs:
           app-name: 'bhaveshkripal'
           slot-name: 'Production'
           package: .
+
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_AC95F27993E54EDCBBFAA14399DB8D87 }}
